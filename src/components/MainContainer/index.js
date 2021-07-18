@@ -9,7 +9,9 @@ import Tabs from '@material-ui/core/Tabs';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Tab from '@material-ui/core/Tab';
+
 import LiveDemo from '../LiveDemo';
+import SpeechToText from '../SpeechToText';
 
 // const tabsStyles = containedTabsStylesHook.useTabs();
 // const tabItemStyles = containedTabsStylesHook.useTabItem();
@@ -92,7 +94,7 @@ class MainContainer extends React.Component {
 								<LiveDemo />
 							</TabPanel>
 							<TabPanel value={value} index={1}>
-								Item Two
+								<SpeechToText />
 							</TabPanel>
 							<TabPanel value={value} index={2}>
 								Item Three
