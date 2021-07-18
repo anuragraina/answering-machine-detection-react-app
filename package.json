@@ -16,6 +16,7 @@
     "@testing-library/react": "^12.0.0",
     "@testing-library/user-event": "^13.2.0",
     "awesome-phonenumber": "^2.54.0",
+    "axios": "^0.21.1",
     "detect-node": "latest",
     "dotenv": "^10.0.0",
     "env-cmd": "^10.1.0",
