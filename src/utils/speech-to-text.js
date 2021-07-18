@@ -91,9 +91,27 @@ export const startStream = async accessToken => {
 				ws.send(targetBuffer.buffer);
 			}
 		};
+
+		return context;
 	};
 
 	const audioStream = await navigator.mediaDevices.getUserMedia({ audio: true, video: false });
 
-	handleSuccess(audioStream);
+	const audioContext = handleSuccess(audioStream);
+
+	return {
+		audioStream,
+		audioContext,
+		ws,
+	};
+};
+
+export const stopStream = async streams => {
+	try {
+		await streams.audioContext.close();
+		await streams.audioStream.getTracks()[0].stop();
+		await streams.ws.close();
+	} catch (e) {
+		console.log(e);
+	}
 };
