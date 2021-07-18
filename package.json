@@ -10,23 +10,23 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
-    "@material-ui/core": "^4.9.10",
-    "@material-ui/icons": "^4.9.1",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "awesome-phonenumber": "^2.34.0",
+    "@material-ui/core": "^4.12.1",
+    "@material-ui/icons": "^4.11.2",
+    "@testing-library/jest-dom": "^5.14.1",
+    "@testing-library/react": "^12.0.0",
+    "@testing-library/user-event": "^13.2.0",
+    "awesome-phonenumber": "^2.54.0",
     "detect-node": "latest",
-    "dotenv": "^8.2.0",
+    "dotenv": "^10.0.0",
     "env-cmd": "^10.1.0",
-    "moment": "^2.25.3",
-    "poll-retry": "^0.0.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-dropzone": "^10.2.2",
+    "moment": "^2.29.1",
+    "poll-retry": "^0.0.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-dropzone": "^11.3.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
-    "symbl-node": "^1.0.7-alpha.3"
+    "react-scripts": "4.0.3",
+    "symbl-node": "^1.0.13"
   },
   "browserslist": {
     "production": [
