@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import moment from 'moment';
@@ -21,6 +21,7 @@ const useStyles = makeStyles(theme => ({
 
 function SpeechToText() {
 	const classes = useStyles();
+	const [accessToken, setAccessToken] = useState('');
 	const [streams, setStreams] = useState({});
 	const [events, setEvents] = useState([]);
 	const [liveTranscript, setLiveTranscript] = useState({
@@ -28,6 +29,22 @@ function SpeechToText() {
 			content: '',
 		},
 	});
+
+	useEffect(() => {
+		axios
+			.post('https://api.symbl.ai/oauth2/token:generate', {
+				type: 'application',
+				appId: symblAppId,
+				appSecret: symblAppSecret,
+			})
+			.then(response => {
+				setAccessToken(response.data.accessToken);
+				console.log('Fetched access token');
+			})
+			.catch(err => {
+				console.log(err);
+			});
+	}, []);
 
 	console.log(streams);
 	console.log(events);
@@ -104,15 +121,14 @@ function SpeechToText() {
 
 	const start = async () => {
 		try {
-			//get access token
-			const response = await axios.post('https://api.symbl.ai/oauth2/token:generate', {
-				type: 'application',
-				appId: symblAppId,
-				appSecret: symblAppSecret,
-			});
-
-			const streamsResponse = await startStream(response.data.accessToken, onSpeechDetected);
-			setStreams(streamsResponse);
+			if (accessToken) {
+				const streamsResponse = await startStream(accessToken, onSpeechDetected);
+				setStreams(streamsResponse);
+			} else {
+				window.alert(
+					'Error fetching access token! Please check the API keys or try again.'
+				);
+			}
 		} catch (e) {
 			console.log(e);
 		}
@@ -129,12 +145,6 @@ function SpeechToText() {
 
 	return (
 		<Container style={{ width: '100%' }}>
-			<button onClick={start} disabled={Object.keys(streams).length > 0}>
-				Start
-			</button>
-			<button onClick={stop} disabled={Object.keys(streams).length === 0}>
-				Stop
-			</button>
 			{/*<Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />*/}
 			<Grid container direction={'row'}>
 				<LiveTranscript transcriptResponse={liveTranscript} />
@@ -145,6 +155,12 @@ function SpeechToText() {
 						<Typography variant={'h6'} style={{ marginBottom: 15, paddingBottom: 10 }}>
 							Configurations
 						</Typography>
+						<button onClick={start} disabled={Object.keys(streams).length > 0}>
+							Start
+						</button>
+						<button onClick={stop} disabled={Object.keys(streams).length === 0}>
+							Stop
+						</button>
 					</Paper>
 				</Grid>
 				<Grid item xs={12} sm={6}>
