@@ -8,6 +8,12 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import MicIcon from '@material-ui/icons/Mic';
 import CloseIcon from '@material-ui/icons/Close';
+import TextField from '@material-ui/core/TextField';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { symblAppId, symblAppSecret } from '../../config';
 import { startStream, stopStream } from '../../utils/speech-to-text';
@@ -34,6 +40,10 @@ const useStyles = makeStyles(theme => ({
 
 function SpeechToText() {
 	const classes = useStyles();
+	const [userDetails, setUserDetails] = useState({
+		name: '',
+		email: '',
+	});
 	const [accessToken, setAccessToken] = useState('');
 	const [streams, setStreams] = useState({});
 	const [events, setEvents] = useState([]);
@@ -42,6 +52,7 @@ function SpeechToText() {
 			content: '',
 		},
 	});
+	const [open, setOpen] = useState(false);
 
 	useEffect(() => {
 		axios
@@ -59,8 +70,18 @@ function SpeechToText() {
 			});
 	}, []);
 
+	const handleChange = event => {
+		const { name, value } = event.target;
+
+		setUserDetails(prevValue => {
+			return {
+				...prevValue,
+				[name]: value,
+			};
+		});
+	};
+
 	console.log(streams);
-	console.log(events);
 
 	const compareEvents = (event1, event2) => {
 		return (
@@ -137,10 +158,16 @@ function SpeechToText() {
 		}
 	};
 
-	const start = async () => {
+	const start = async action => {
 		try {
 			if (accessToken) {
-				const streamsResponse = await startStream(accessToken, onSpeechDetected);
+				console.log(action);
+				let user = {
+					name: '',
+					email: '',
+				};
+				action === 'proceed' && (user = userDetails);
+				const streamsResponse = await startStream({ accessToken, onSpeechDetected, user });
 				setStreams(streamsResponse);
 			} else {
 				window.alert(
@@ -161,6 +188,15 @@ function SpeechToText() {
 		}
 	};
 
+	const handleClickOpen = () => {
+		setOpen(true);
+	};
+
+	const handleClose = action => {
+		typeof action === 'string' && start(action);
+		setOpen(false);
+	};
+
 	return (
 		<Container style={{ width: '100%' }}>
 			{/*<Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />*/}
@@ -177,11 +213,52 @@ function SpeechToText() {
 							variant='contained'
 							color='primary'
 							startIcon={<MicIcon />}
-							onClick={start}
+							onClick={handleClickOpen}
 							disabled={Object.keys(streams).length > 0}
 						>
 							Talk
 						</Button>
+						<Dialog
+							open={open}
+							onClose={handleClose}
+							aria-labelledby='form-dialog-title'
+						>
+							<DialogTitle id='form-dialog-title'>Get Insights in Email</DialogTitle>
+							<DialogContent>
+								<DialogContentText>
+									Before we start, do you want to get the Insights of the meeting
+									in your email? If yes, please enter the details and proceed.
+								</DialogContentText>
+								<TextField
+									name='name'
+									id='name'
+									label='Name'
+									variant='standard'
+									fullWidth
+									style={{ marginBottom: 15 }}
+									onChange={handleChange}
+									value={userDetails.name}
+								/>
+								<TextField
+									name='email'
+									id='email'
+									label='Email Address'
+									type='email'
+									variant='standard'
+									fullWidth
+									onChange={handleChange}
+									value={userDetails.email}
+								/>
+							</DialogContent>
+							<DialogActions>
+								<Button onClick={() => handleClose('skip')} color='primary'>
+									Skip
+								</Button>
+								<Button onClick={() => handleClose('proceed')} color='primary'>
+									Proceed
+								</Button>
+							</DialogActions>
+						</Dialog>
 						<Button
 							variant='contained'
 							color='primary'

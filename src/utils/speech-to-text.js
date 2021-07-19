@@ -1,4 +1,5 @@
-export const startStream = async (accessToken, onSpeechDetected) => {
+export const startStream = async ({ accessToken, onSpeechDetected, user }) => {
+	console.log(user);
 	const uniqueMeetingId = btoa('user@example.com');
 	const symblEndpoint = `wss://api.symbl.ai/v1/realtime/insights/${uniqueMeetingId}?access_token=${accessToken}`;
 
@@ -59,8 +60,8 @@ export const startStream = async (accessToken, onSpeechDetected) => {
 					},
 				},
 				speaker: {
-					userId: 'rainakalhan90@gmail.com',
-					name: 'Anurag Raina',
+					userId: user.email,
+					name: user.name,
 				},
 			})
 		);

@@ -21,25 +21,6 @@ const theme = createTheme({
 		body1: {
 			fontSize: '0.875rem',
 		},
-		button: {
-			fontSize: '1rem',
-		},
-	},
-	overrides: {
-		MuiInputBase: {
-			input: {
-				background: '#EEEEEE',
-				fontSize: '0.875rem',
-				padding: '10px 15px 11px 14px',
-			},
-		},
-		MuiFormLabel: {
-			root: {
-				paddingBottom: 5,
-				fontSize: '0.875rem',
-				color: '#000000',
-			},
-		},
 	},
 });
 
