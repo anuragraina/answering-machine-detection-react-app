@@ -23,6 +23,11 @@ function SpeechToText() {
 	const classes = useStyles();
 	const [streams, setStreams] = useState({});
 	const [events, setEvents] = useState([]);
+	const [liveTranscript, setLiveTranscript] = useState({
+		payload: {
+			content: '',
+		},
+	});
 
 	console.log(streams);
 	console.log(events);
@@ -61,6 +66,12 @@ function SpeechToText() {
 			addEvent({
 				type: 'recognition_started',
 				title: 'Recognition Started',
+			});
+		} else if (data.type === 'message' && data.message.hasOwnProperty('punctuated')) {
+			setLiveTranscript({
+				payload: {
+					content: data.message.punctuated.transcript,
+				},
 			});
 		} else if (type === 'insight_response') {
 			//console.log(data);
@@ -126,7 +137,7 @@ function SpeechToText() {
 			</button>
 			{/*<Typography component="div" style={{ backgroundColor: '#cfe8fc', height: '100vh' }} />*/}
 			<Grid container direction={'row'}>
-				<LiveTranscript transcriptResponse={undefined} />
+				<LiveTranscript transcriptResponse={liveTranscript} />
 			</Grid>
 			<Grid container direction='row' justify='center' alignItems='flex-start' spacing={3}>
 				<Grid item xs={12} sm={6}>
