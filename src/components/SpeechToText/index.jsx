@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Container, Grid, Paper, Typography } from '@material-ui/core';
 import moment from 'moment';
+import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
+import MicIcon from '@material-ui/icons/Mic';
+import CloseIcon from '@material-ui/icons/Close';
 
 import { symblAppId, symblAppSecret } from '../../config';
 import { startStream, stopStream } from '../../utils/speech-to-text';
@@ -16,6 +22,13 @@ const useStyles = makeStyles(theme => ({
 	},
 	paper: {
 		padding: theme.spacing(3),
+	},
+	paperMargin: {
+		padding: theme.spacing(3),
+		marginTop: theme.spacing(3),
+	},
+	button: {
+		marginLeft: theme.spacing(3),
 	},
 }));
 
@@ -158,14 +171,32 @@ function SpeechToText() {
 				<Grid item xs={12} sm={6}>
 					<Paper variant={'outlined'} className={classes.paper}>
 						<Typography variant={'h6'} style={{ marginBottom: 15, paddingBottom: 10 }}>
-							Configurations
+							Control
 						</Typography>
-						<button onClick={start} disabled={Object.keys(streams).length > 0}>
-							Start
-						</button>
-						<button onClick={stop} disabled={Object.keys(streams).length === 0}>
-							Stop
-						</button>
+						<Button
+							variant='contained'
+							color='primary'
+							startIcon={<MicIcon />}
+							onClick={start}
+							disabled={Object.keys(streams).length > 0}
+						>
+							Talk
+						</Button>
+						<Button
+							variant='contained'
+							color='primary'
+							className={classes.button}
+							startIcon={<CloseIcon />}
+							onClick={stop}
+							disabled={Object.keys(streams).length === 0}
+						>
+							End
+						</Button>
+					</Paper>
+					<Paper variant={'outlined'} className={classes.paperMargin}>
+						<Typography variant={'h6'} style={{ marginBottom: 15, paddingBottom: 10 }}>
+							Transcript
+						</Typography>
 					</Paper>
 				</Grid>
 				<Grid item xs={12} sm={6}>
