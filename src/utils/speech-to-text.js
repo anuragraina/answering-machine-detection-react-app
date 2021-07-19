@@ -1,4 +1,4 @@
-export const startStream = async accessToken => {
+export const startStream = async (accessToken, onSpeechDetected) => {
 	const uniqueMeetingId = btoa('user@example.com');
 	const symblEndpoint = `wss://api.symbl.ai/v1/realtime/insights/${uniqueMeetingId}?access_token=${accessToken}`;
 
@@ -8,28 +8,29 @@ export const startStream = async accessToken => {
 	ws.onmessage = event => {
 		// You can find the conversationId in event.message.data.conversationId;
 		const data = JSON.parse(event.data);
-		if (data.type === 'message' && data.message.hasOwnProperty('data')) {
-			console.log('conversationId', data.message.data.conversationId);
-		}
-		if (data.type === 'message_response') {
-			for (let message of data.messages) {
-				console.log('Transcript (more accurate): ', message.payload.content);
-			}
-		}
-		if (data.type === 'topic_response') {
-			for (let topic of data.topics) {
-				console.log('Topic detected: ', topic.phrases);
-			}
-		}
-		if (data.type === 'insight_response') {
-			for (let insight of data.insights) {
-				console.log('Insight detected: ', insight.payload.content);
-			}
-		}
-		if (data.type === 'message' && data.message.hasOwnProperty('punctuated')) {
-			console.log('Live transcript (less accurate): ', data.message.punctuated.transcript);
-		}
-		console.log(`Response type: ${data.type}. Object: `, data);
+		onSpeechDetected(data);
+		// if (data.type === 'message' && data.message.hasOwnProperty('data')) {
+		// 	console.log('conversationId', data.message.data.conversationId);
+		// }
+		// if (data.type === 'message_response') {
+		// 	for (let message of data.messages) {
+		// 		console.log('Transcript (more accurate): ', message.payload.content);
+		// 	}
+		// }
+		// if (data.type === 'topic_response') {
+		// 	for (let topic of data.topics) {
+		// 		console.log('Topic detected: ', topic.phrases);
+		// 	}
+		// }
+		// if (data.type === 'insight_response') {
+		// 	for (let insight of data.insights) {
+		// 		console.log('Insight detected: ', insight.payload.content);
+		// 	}
+		// }
+		// if (data.type === 'message' && data.message.hasOwnProperty('punctuated')) {
+		// 	console.log('Live transcript (less accurate): ', data.message.punctuated.transcript);
+		// }
+		// console.log(`Response type: ${data.type}. Object: `, data);
 	};
 
 	// Fired when the WebSocket closes unexpectedly due to an error or lost connetion
@@ -58,8 +59,8 @@ export const startStream = async accessToken => {
 					},
 				},
 				speaker: {
-					userId: 'example@symbl.ai',
-					name: 'Example Sample',
+					userId: 'rainakalhan90@gmail.com',
+					name: 'Anurag Raina',
 				},
 			})
 		);
