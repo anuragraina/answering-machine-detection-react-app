@@ -13,6 +13,7 @@ import EmojiEmotionsIcon from '@material-ui/icons/EmojiEmotions';
 import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MicIcon from '@material-ui/icons/Mic';
+import NoteAddIcon from '@material-ui/icons/NoteAdd';
 import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/core/styles';
 import styles from '../../globalStyle';
@@ -42,6 +43,8 @@ const getEventIcon = type => {
 		return <NotInterestedIcon />;
 	} else if (type === 'recognition_started') {
 		return <MicIcon />;
+	} else if (type === 'topic') {
+		return <NoteAddIcon />;
 	} else {
 		return <NotificationsIcon />;
 	}

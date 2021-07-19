@@ -71,8 +71,6 @@ function SpeechToText() {
 	};
 
 	const onSpeechDetected = async data => {
-		const { type } = data;
-
 		if (data.type === 'message' && data.message.type === 'conversation_created') {
 			addEvent({
 				type: 'conversation_created',
@@ -90,8 +88,15 @@ function SpeechToText() {
 					content: data.message.punctuated.transcript,
 				},
 			});
-		} else if (type === 'insight_response') {
-			//console.log(data);
+		} else if (data.type === 'topic_response') {
+			for (let topic of data.topics) {
+				addEvent({
+					type: 'topic',
+					title: `Topic Detected`,
+					description: `Topic: ${topic.phrases}`,
+				});
+			}
+		} else if (data.type === 'insight_response') {
 			const { insights } = data;
 			if (insights.length > 0) {
 				insights.forEach(insight => {
