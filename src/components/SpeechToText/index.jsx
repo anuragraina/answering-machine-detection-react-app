@@ -50,8 +50,20 @@ function SpeechToText() {
 
 	const onSpeechDetected = async data => {
 		const { type } = data;
-		if (type === 'insight_response') {
-			console.log(data);
+
+		if (data.type === 'message' && data.message.type === 'conversation_created') {
+			addEvent({
+				type: 'conversation_created',
+				title: 'Conversation Created',
+				description: `Conversation Id: ${data.message.data.conversationId}`,
+			});
+		} else if (data.type === 'message' && data.message.type === 'recognition_started') {
+			addEvent({
+				type: 'recognition_started',
+				title: 'Recognition Started',
+			});
+		} else if (type === 'insight_response') {
+			//console.log(data);
 			const { insights } = data;
 			if (insights.length > 0) {
 				insights.forEach(insight => {
