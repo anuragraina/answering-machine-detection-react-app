@@ -14,6 +14,7 @@ import NotInterestedIcon from '@material-ui/icons/NotInterested';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MicIcon from '@material-ui/icons/Mic';
 import NoteAddIcon from '@material-ui/icons/NoteAdd';
+import BlockIcon from '@material-ui/icons/Block';
 import CardHeader from '@material-ui/core/CardHeader';
 import { withStyles } from '@material-ui/core/styles';
 import styles from '../../globalStyle';
@@ -45,6 +46,8 @@ const getEventIcon = type => {
 		return <MicIcon />;
 	} else if (type === 'topic') {
 		return <NoteAddIcon />;
+	} else if (type === 'conversation_stopped') {
+		return <BlockIcon />;
 	} else {
 		return <NotificationsIcon />;
 	}

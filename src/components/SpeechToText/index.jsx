@@ -173,10 +173,6 @@ function SpeechToText() {
 	};
 
 	const resetState = () => {
-		setUserDetails({
-			name: '',
-			email: '',
-		});
 		setTranscriptInEmail(false);
 		setStreams({});
 		setTranscripts([]);
@@ -216,6 +212,14 @@ function SpeechToText() {
 		try {
 			await stopStream(streams);
 			setStreams({});
+			addEvent({
+				type: 'conversation_stopped',
+				title: 'Conversation Stopped',
+			});
+			setUserDetails({
+				name: '',
+				email: '',
+			});
 		} catch (e) {
 			console.log(e);
 		}
