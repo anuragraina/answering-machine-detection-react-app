@@ -84,11 +84,11 @@ class MainContainer extends React.Component {
 									borderRight: `1px solid ${theme.palette.divider}`,
 								}}
 							>
-								<Tab label='Real-time' {...a11yProps(0)} />
-								<Tab label='Text' {...a11yProps(1)} />
-								<Tab label='Audio' {...a11yProps(2)} />
+								<Tab label='Telephonic call Transcription' {...a11yProps(0)} />
+								<Tab label='Speech to Text Insights' {...a11yProps(1)} />
+								{/* <Tab label='Audio' {...a11yProps(2)} />
 								<Tab label='Video' {...a11yProps(3)} />
-								<Tab label='Code' {...a11yProps(4)} />
+								<Tab label='Code' {...a11yProps(4)} /> */}
 							</Tabs>
 							<TabPanel value={value} index={0}>
 								<LiveDemo />
@@ -96,7 +96,7 @@ class MainContainer extends React.Component {
 							<TabPanel value={value} index={1}>
 								<SpeechToText />
 							</TabPanel>
-							<TabPanel value={value} index={2}>
+							{/* <TabPanel value={value} index={2}>
 								Item Three
 							</TabPanel>
 							<TabPanel value={value} index={3}>
@@ -110,7 +110,7 @@ class MainContainer extends React.Component {
 							</TabPanel>
 							<TabPanel value={value} index={6}>
 								Item Seven
-							</TabPanel>
+							</TabPanel> */}
 						</div>
 					</Container>
 				</ThemeProvider>
