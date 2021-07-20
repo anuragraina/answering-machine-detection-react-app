@@ -48,6 +48,7 @@ function SpeechToText() {
 	const [transcriptInEmail, setTranscriptInEmail] = useState(false);
 	const [accessToken, setAccessToken] = useState('');
 	const [streams, setStreams] = useState({});
+	const [transcripts, setTranscripts] = useState([]);
 	const [events, setEvents] = useState([]);
 	const [liveTranscript, setLiveTranscript] = useState({
 		payload: {
@@ -83,8 +84,6 @@ function SpeechToText() {
 		});
 	};
 
-	console.log(streams);
-
 	const compareEvents = (event1, event2) => {
 		return (
 			event1.type === event2.type &&
@@ -106,6 +105,15 @@ function SpeechToText() {
 		setEvents(prevEvents => [...prevEvents, newEvent]);
 	};
 
+	const addTranscript = message => {
+		const text = message.payload.content;
+		const timestamp = moment().format('hh:mm a');
+		const uniqueId = message.id;
+
+		const newTranscript = { text, uniqueId, timestamp };
+		setTranscripts(prevTranscripts => [...prevTranscripts, newTranscript]);
+	};
+
 	const onSpeechDetected = async data => {
 		if (data.type === 'message' && data.message.type === 'conversation_created') {
 			addEvent({
@@ -124,6 +132,10 @@ function SpeechToText() {
 					content: data.message.punctuated.transcript,
 				},
 			});
+		} else if (data.type === 'message_response') {
+			for (let message of data.messages) {
+				addTranscript(message);
+			}
 		} else if (data.type === 'topic_response') {
 			for (let topic of data.topics) {
 				addEvent({
@@ -274,7 +286,11 @@ function SpeechToText() {
 							End
 						</Button>
 					</Paper>
-					<Transcript />
+					<Transcript
+						transcripts={transcripts}
+						transcriptInEmail={transcriptInEmail}
+						user={userDetails}
+					/>
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<EventsTimeline events={events} />

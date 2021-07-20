@@ -14,25 +14,45 @@ const useStyles = makeStyles(theme => ({
 	},
 }));
 
-function Transcript({ transcripts }) {
+function Transcript({ transcripts, transcriptInEmail, user }) {
 	const classes = useStyles();
+	const name = transcriptInEmail ? user.name : 'Anonyms';
+	const badgeName = name
+		.split(/\s/)
+		.reduce((response, word) => (response += word.slice(0, 1)), '');
 
 	return (
 		<Paper variant={'outlined'} className={classes.paper}>
 			<Typography variant={'h6'} style={{ marginBottom: 15, paddingBottom: 10 }}>
 				Transcript
 			</Typography>
-			<Card variant='outlined'>
-				<CardHeader
-					avatar={
-						<Avatar aria-label='recipe' className={classes.avatar}>
-							R
-						</Avatar>
-					}
-					title={'Anonyms'}
-					subheader='September 14, 2016'
-				/>
-			</Card>
+			{transcripts && transcripts.length > 0 ? (
+				transcripts.map(value => (
+					<Card
+						variant={'outlined'}
+						style={{
+							marginBottom: 5,
+						}}
+					>
+						<CardHeader
+							avatar={
+								<Avatar aria-label='recipe' className={classes.avatar}>
+									{badgeName}
+								</Avatar>
+							}
+							title={name}
+							subheader={value.timestamp}
+						/>
+						<CardContent style={{ paddingTop: 0 }}>
+							<Typography variant={'caption'}>{value.text}</Typography>
+						</CardContent>
+					</Card>
+				))
+			) : (
+				<Typography variant={'body1'} style={{ color: 'gray' }}>
+					Transcripts will appear here ...
+				</Typography>
+			)}
 		</Paper>
 	);
 }
