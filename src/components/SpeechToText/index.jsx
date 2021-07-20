@@ -19,6 +19,7 @@ import { symblAppId, symblAppSecret } from '../../config';
 import { startStream, stopStream } from '../../utils/speech-to-text';
 import LiveTranscript from '../LiveTranscript';
 import EventsTimeline from '../EventsTimeline';
+import Transcript from '../Transcript';
 
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -273,11 +274,7 @@ function SpeechToText() {
 							End
 						</Button>
 					</Paper>
-					<Paper variant={'outlined'} className={classes.paperMargin}>
-						<Typography variant={'h6'} style={{ marginBottom: 15, paddingBottom: 10 }}>
-							Transcript
-						</Typography>
-					</Paper>
+					<Transcript />
 				</Grid>
 				<Grid item xs={12} sm={6}>
 					<EventsTimeline events={events} />
