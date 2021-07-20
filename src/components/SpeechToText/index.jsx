@@ -44,6 +44,7 @@ function SpeechToText() {
 		name: '',
 		email: '',
 	});
+	const [transcriptInEmail, setTranscriptInEmail] = useState(false);
 	const [accessToken, setAccessToken] = useState('');
 	const [streams, setStreams] = useState({});
 	const [events, setEvents] = useState([]);
@@ -161,12 +162,14 @@ function SpeechToText() {
 	const start = async action => {
 		try {
 			if (accessToken) {
-				console.log(action);
 				let user = {
 					name: '',
 					email: '',
 				};
-				action === 'proceed' && (user = userDetails);
+				if (action === 'proceed') {
+					user = userDetails;
+					setTranscriptInEmail(true);
+				}
 				const streamsResponse = await startStream({ accessToken, onSpeechDetected, user });
 				setStreams(streamsResponse);
 			} else {
@@ -188,11 +191,11 @@ function SpeechToText() {
 		}
 	};
 
-	const handleClickOpen = () => {
+	const openDialog = () => {
 		setOpen(true);
 	};
 
-	const handleClose = action => {
+	const closeDialog = action => {
 		typeof action === 'string' && start(action);
 		setOpen(false);
 	};
@@ -213,14 +216,14 @@ function SpeechToText() {
 							variant='contained'
 							color='primary'
 							startIcon={<MicIcon />}
-							onClick={handleClickOpen}
+							onClick={openDialog}
 							disabled={Object.keys(streams).length > 0}
 						>
 							Talk
 						</Button>
 						<Dialog
 							open={open}
-							onClose={handleClose}
+							onClose={closeDialog}
 							aria-labelledby='form-dialog-title'
 						>
 							<DialogTitle id='form-dialog-title'>Get Insights in Email</DialogTitle>
@@ -251,10 +254,10 @@ function SpeechToText() {
 								/>
 							</DialogContent>
 							<DialogActions>
-								<Button onClick={() => handleClose('skip')} color='primary'>
+								<Button onClick={() => closeDialog('skip')} color='primary'>
 									Skip
 								</Button>
-								<Button onClick={() => handleClose('proceed')} color='primary'>
+								<Button onClick={() => closeDialog('proceed')} color='primary'>
 									Proceed
 								</Button>
 							</DialogActions>
