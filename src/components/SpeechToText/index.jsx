@@ -216,10 +216,6 @@ function SpeechToText() {
 				type: 'conversation_stopped',
 				title: 'Conversation Stopped',
 			});
-			setUserDetails({
-				name: '',
-				email: '',
-			});
 		} catch (e) {
 			console.log(e);
 		}
