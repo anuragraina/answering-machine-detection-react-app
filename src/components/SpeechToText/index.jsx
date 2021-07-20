@@ -172,8 +172,25 @@ function SpeechToText() {
 		}
 	};
 
+	const resetState = () => {
+		setUserDetails({
+			name: '',
+			email: '',
+		});
+		setTranscriptInEmail(false);
+		setStreams({});
+		setTranscripts([]);
+		setEvents([]);
+		setLiveTranscript({
+			payload: {
+				content: '',
+			},
+		});
+	};
+
 	const start = async action => {
 		try {
+			resetState();
 			if (accessToken) {
 				let user = {
 					name: '',
